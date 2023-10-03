@@ -15,7 +15,7 @@ def read_url(url):
 			mystr = mybytes.decode(sys.stdout.encoding)
 			fp.close()
 			return mystr
-		except:
+		except Exception:
 			fail_count += 1
 			sleep_time = sleep_time * 2.5
 			print("Failed to read " + url + "(#" + str(fail_count) + "), sleeping for " + str(sleep_time) + "seconds before retrying...")
