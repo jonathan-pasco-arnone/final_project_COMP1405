@@ -8,7 +8,7 @@ import os
 import webdev
 
 # constant so I don't have to type out the path every time
-CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
+CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data/"
 
 def crawl(seed):
     """ Parses the data from the seed provided into a more useful set of files """
@@ -16,9 +16,9 @@ def crawl(seed):
     # Clears the data from any previous crawls
     if os.path.exists(CRAWL_PATH):
         for folder in os.listdir(CRAWL_PATH):
-            for file in os.listdir(CRAWL_PATH + "/" + str(folder)):
-                os.remove(CRAWL_PATH + "/" + str(folder) + "/" + str(file))
-            os.rmdir(CRAWL_PATH + "/" + str(folder))
+            for file in os.listdir(CRAWL_PATH + str(folder)):
+                os.remove(CRAWL_PATH + str(folder) + "/" + str(file))
+            os.rmdir(CRAWL_PATH + str(folder))
         os.rmdir(CRAWL_PATH)
 
     os.mkdir(CRAWL_PATH)
@@ -28,8 +28,7 @@ def crawl(seed):
     folder_num = 0
     for weblink in links:
         # Make a new folder for the new link
-        os.mkdir("/workspaces/final_project_COMP1405/testing-resources/crawler_data/"
-              + str(folder_num))
+        os.mkdir(CRAWL_PATH + str(folder_num))
         doc_string = webdev.read_url(weblink)
 
         # The "edit" variables are used in the following while loop to indicate whether the loop
@@ -48,8 +47,8 @@ def crawl(seed):
                 edit_key = True
             elif "</title>" == (doc_string[index: index + 8]):
                 # Adds the title and link of the website to a file
-                file = open("/workspaces/final_project_COMP1405/testing-resources/crawler_data/"
-                      + str(folder_num) + "/title_and_link.txt", "w", encoding="utf8")
+                file = open(CRAWL_PATH + str(folder_num)
+                            + "/title_and_link.txt", "w", encoding="utf8")
                 file.write(new_key + "\n" + weblink + "\n")
                 file.close()
                 edit_key = False
@@ -59,8 +58,8 @@ def crawl(seed):
                 edit_text = True
             elif "</p>" == (doc_string[index: index + 4]):
                 # Adds the text of the website to a file
-                file = open("/workspaces/final_project_COMP1405/testing-resources/crawler_data/"
-                      + str(folder_num) + "/file_text.txt", "w", encoding="utf8")
+                file = open(CRAWL_PATH + str(folder_num)
+                            + "/file_text.txt", "w", encoding="utf8")
                 file.write(new_text)
                 file.close()
                 edit_text = False
@@ -91,8 +90,8 @@ def crawl(seed):
                 # Adds the links of the website to a file
                 # The use of "a" instead of "w" is so that I can add additional links instead of
                 # just overwriting the whole document every time
-                file = open("/workspaces/final_project_COMP1405/testing-resources/crawler_data/"
-                      + str(folder_num) + "/page_links.txt", "a", encoding="utf8")
+                file = open(CRAWL_PATH + str(folder_num)
+                            + "/page_links.txt", "a", encoding="utf8")
                 file.write(new_link + "\n")
                 file.close()
 
