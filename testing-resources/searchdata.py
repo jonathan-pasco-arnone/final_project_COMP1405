@@ -5,6 +5,7 @@
 
 # For cycling through the folders
 import os
+import matmult
 
 CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
 
@@ -42,5 +43,8 @@ def get_incoming_links(URL):
         return None
     else:
         return incoming_links
+
+def get_page_rank(URL):
+    """ Gets the page rank of the url provided """
 
 get_incoming_links("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")
