@@ -21,11 +21,12 @@ def crawl(seed):
 
     folder_num = 0
     for weblink in links:
+        # Make a new folder for the new link
         os.mkdir("/workspaces/final_project_COMP1405/testing-resources/crawler_data/"
               + str(folder_num))
         doc_string = webdev.read_url(weblink)
 
-        # The "edit" variables are use in the following while loop to indicate whether the loop
+        # The "edit" variables are used in the following while loop to indicate whether the loop
         # should start/end adding to the title/text/link of the new key/paragraph/url
         edit_key = False
         edit_text = False
