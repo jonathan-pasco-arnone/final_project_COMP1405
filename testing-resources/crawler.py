@@ -5,16 +5,22 @@
 
 # OS is just so I can make folders from inside the program
 import os
-# Shutil just lets me reset the directory of information for a new crawl
-import shutil
 import webdev
+
+# constant so I don't have to type out the path every time
+CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
 
 def crawl(seed):
     """ Parses the data from the seed provided into a more useful set of files """
 
     # Clears the data from any previous crawls
-    if os.path.exists("/workspaces/final_project_COMP1405/testing-resources/crawler_data"):
-        shutil.rmtree("/workspaces/final_project_COMP1405/testing-resources/crawler_data")
+    if os.path.exists(CRAWL_PATH):
+        for folder in os.listdir(CRAWL_PATH):
+            for file in os.listdir(CRAWL_PATH + "/" + str(folder)):
+                os.remove(CRAWL_PATH + "/" + str(folder) + "/" + str(file))
+            os.rmdir(CRAWL_PATH + "/" + str(folder))
+        os.rmdir(CRAWL_PATH)
+
     os.mkdir("/workspaces/final_project_COMP1405/testing-resources/crawler_data")
     links = []
     links.append(seed)
@@ -25,7 +31,7 @@ def crawl(seed):
               + str(folder_num))
         doc_string = webdev.read_url(weblink)
 
-        # The "edit" variables are use in the following while loop to indicate whether the loop
+        # The "edit" variables are used in the following while loop to indicate whether the loop
         # should start/end adding to the title/text/link of the new key/paragraph/url
         edit_key = False
         edit_text = False
