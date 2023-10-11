@@ -61,26 +61,15 @@ def get_page_rank(URL):
     
     alpha = 1 / len(links)
 
-    for key in links.keys():
+    for index, key in enumerate(links.keys()):
         incoming_links = get_incoming_links(key)
         chance_per_page = 1 / len(incoming_links)
 
-        for index, website in enumerate(links.keys()):
-            # adds the "\n" at the end of every link for comparison with outgoing links
-            website += "\n"
-            print(incoming_links)
+        for website in links.keys():
             if website in incoming_links:
                 probability_matrix[index].append(chance_per_page)
             else:
                 probability_matrix[index].append(0)
-
-    for row in probability_matrix:
-        print(row)
-    for key in links.keys():
-        print(key)
-        print(links[key])
-        
-
-
+    
 get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")
 # get_incoming_links("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")
