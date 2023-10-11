@@ -58,9 +58,8 @@ def get_page_rank(URL):
         file_link = (file.readlines(0)[1]).strip()
         links[file_link] = len(probability_matrix)
         probability_matrix.append([])
-    
-    alpha = 1 / len(links)
 
+    # Fills out the probability matrix with all the values
     for index, key in enumerate(links.keys()):
         incoming_links = get_incoming_links(key)
         chance_per_page = 1 / len(incoming_links)
@@ -71,5 +70,40 @@ def get_page_rank(URL):
             else:
                 probability_matrix[index].append(0)
     
+    alpha = 1 / len(links)
+
+
+
+
+
+
+
+
+
+
+
+
+
+    probability_matrix = [[0,1,0],[0.5,0,0.5],[0,1,0]]
+    alpha = 0.5
+
+    for row in probability_matrix:
+        print(row)
+    print("\n\n")
+
+    # Multiiply matrix by 1 - alpha 
+    probability_matrix = matmult.mult_scalar(probability_matrix, 1 - alpha)
+
+    # Add the two matrices
+    for row_index, row in enumerate(probability_matrix):
+        for column_index, value in enumerate(row):
+            probability_matrix[row_index][column_index] = value + alpha / len(probability_matrix)
+    
+    
+    for row in probability_matrix:
+        print(row)
+    print(alpha / len(probability_matrix))
+    print("\n\n")
+    
+    
 get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")
-# get_incoming_links("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")

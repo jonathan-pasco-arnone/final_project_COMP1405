@@ -53,6 +53,7 @@ def mult_matrix(a, b):
         return "None"
     
 def euclidean_dist(a,b):
+    """ Calculates the distance between two points """
     sum_under_root = 0
     # The 0's are because each vector is within another list conatining only itself
     # ex: [[5,3,7]] 
