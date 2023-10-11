@@ -21,7 +21,7 @@ def crawl(seed):
             os.rmdir(CRAWL_PATH + "/" + str(folder))
         os.rmdir(CRAWL_PATH)
 
-    os.mkdir("/workspaces/final_project_COMP1405/testing-resources/crawler_data")
+    os.mkdir(CRAWL_PATH)
     links = []
     links.append(seed)
 
