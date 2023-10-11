@@ -5,6 +5,7 @@
 
 # For cycling through the folders
 import os
+import matmult
 
 CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
 
@@ -43,4 +44,43 @@ def get_incoming_links(URL):
     else:
         return incoming_links
 
-get_incoming_links("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")
+def get_page_rank(URL):
+    """ Gets the page rank of the url provided """
+    # The main matrix of the problem
+    probability_matrix = []
+
+    # Holds each link as the key and the value is the row in the matrix
+    links = {}
+
+    # Generates the amount of rows needed (aka the amount of websites atatched to the seed)
+    for folder in os.listdir(CRAWL_PATH):
+        file = open(CRAWL_PATH + "/" + folder + "/title_and_link.txt", "r", encoding="utf8")
+        file_link = (file.readlines(0)[1]).strip()
+        links[file_link] = len(probability_matrix)
+        probability_matrix.append([])
+    
+    alpha = 1 / len(links)
+
+    for key in links.keys():
+        incoming_links = get_incoming_links(key)
+        chance_per_page = 1 / len(incoming_links)
+
+        for index, website in enumerate(links.keys()):
+            # adds the "\n" at the end of every link for comparison with outgoing links
+            website += "\n"
+            print(incoming_links)
+            if website in incoming_links:
+                probability_matrix[index].append(chance_per_page)
+            else:
+                probability_matrix[index].append(0)
+
+    for row in probability_matrix:
+        print(row)
+    for key in links.keys():
+        print(key)
+        print(links[key])
+        
+
+
+get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")
+# get_incoming_links("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")

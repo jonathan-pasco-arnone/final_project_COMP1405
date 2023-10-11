@@ -27,6 +27,7 @@ def crawl(seed):
 
     folder_num = 0
     for weblink in links:
+        # Make a new folder for the new link
         os.mkdir("/workspaces/final_project_COMP1405/testing-resources/crawler_data/"
               + str(folder_num))
         doc_string = webdev.read_url(weblink)
