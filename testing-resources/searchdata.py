@@ -48,8 +48,10 @@ def get_page_rank(URL):
     """ Gets the page rank of the url provided """
     # The main matrix of the problem
     probability_matrix = []
+    basic_vector = [[]]
 
-    # Holds each link as the key and the value is the row in the matrix
+    # Holds each link as the key
+    # Holds each value as the row in the matrix
     links = {}
 
     # Generates the amount of rows needed (aka the amount of websites atatched to the seed)
@@ -58,6 +60,12 @@ def get_page_rank(URL):
         file_link = (file.readlines(0)[1]).strip()
         links[file_link] = len(probability_matrix)
         probability_matrix.append([])
+        basic_vector[0].append(0)
+    
+    if links.get(URL) is None:
+        return -1
+    
+    basic_vector[0][0] = 1
 
     # Fills out the probability matrix with all the values
     for index, key in enumerate(links.keys()):
@@ -70,40 +78,26 @@ def get_page_rank(URL):
             else:
                 probability_matrix[index].append(0)
     
-    alpha = 1 / len(links)
-
-
-
-
-
-
-
-
-
-
-
-
-
-    probability_matrix = [[0,1,0],[0.5,0,0.5],[0,1,0]]
-    alpha = 0.5
-
-    for row in probability_matrix:
-        print(row)
-    print("\n\n")
+    alpha = 0.1
 
     # Multiiply matrix by 1 - alpha 
     probability_matrix = matmult.mult_scalar(probability_matrix, 1 - alpha)
 
-    # Add the two matrices
+    # Add probability matrix with a matrix of equal size that has a 1 in (amount of rows) value
+    # This second matrix will be multiplied by alpha
     for row_index, row in enumerate(probability_matrix):
         for column_index, value in enumerate(row):
-            probability_matrix[row_index][column_index] = value + alpha / len(probability_matrix)
+            probability_matrix[row_index][column_index] += + alpha / len(probability_matrix)
     
+    vector_b = [[]]
+    euclidean_distance = 1
+    # Euclidean distance testor
+    while euclidean_distance > 0.0001:
+        vector_b = basic_vector
+        basic_vector = matmult.mult_matrix(basic_vector, probability_matrix)
+        euclidean_distance = matmult.euclidean_dist(vector_b, basic_vector)
     
-    for row in probability_matrix:
-        print(row)
-    print(alpha / len(probability_matrix))
-    print("\n\n")
-    
-    
-get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html")
+    return basic_vector[0][links[URL]]
+
+
+print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
