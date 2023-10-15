@@ -6,6 +6,7 @@
 # For cycling through the folders
 import os
 import matmult
+import math
 
 CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
 
@@ -24,7 +25,7 @@ def get_outgoing_links(URL):
     return outgoing_links
 
 def get_incoming_links(URL):
-    """ Retrieves the outgoing links to a URL with reference to the seed URL from the crawl"""
+    """ Retrieves the outgoing links to a URL with reference to the seed URL from the crawl """
     incoming_links = []
     # Cycles through each folder to check the outputs of each one
     for folder in os.listdir(CRAWL_PATH):
@@ -99,5 +100,70 @@ def get_page_rank(URL):
     
     return basic_vector[0][links[URL]]
 
+def get_idf(word):
+    """ gets the inverse document frequency of the word provided """
+    # initialize variables
+    total_docs = 0
+    docs_with_word = 0
 
+    # get total number of documents
+    for folder in os.listdir(CRAWL_PATH):
+        file = open(CRAWL_PATH + "/" + folder + "/file_text.txt", "r", encoding="utf8")
+        total_docs += 1
+        # get 1 + total number of documents that word appears in
+        if word in file.read():
+            docs_with_word += 1
+        # close file (good practice)
+        file.close()
+
+    # return 0 if word doesn't appear, else return
+    # log base two of total docs / 1 + docs with word
+    if docs_with_word == 0:
+        return 0
+    return math.log((total_docs / (1 + docs_with_word)), 2)
+
+def get_tf(word, URL):
+    """ gets the term frequency of the word provided in the document provided """
+    # initialize variables
+    total_words = 0
+    time_word_appears = 0
+
+    # get the matching file_text file for the url
+    for folder in os.listdir(CRAWL_PATH):
+        file = open(CRAWL_PATH + "/" + folder + "/title_and_link.txt", "r", encoding="utf8")
+        line = file.readlines()
+        if (line[1].strip("\n")) == URL:
+            # IMPORTANT: THIS CODE IS HORRIBLE AND NEEDS TO BE FIXED, BUT IT WORKS FOR NOW
+            num_find = list(line[1].strip("\n"))
+            for i in num_find:
+                if i in "0123456789":
+                    folder_num = i
+        file.close()
+    with open(CRAWL_PATH + "/" + folder_num + "/file_text.txt", 'r', encoding="utf8") as file:
+        # make a list of all the words in the file
+        word_list = file.read().split()
+        # get total number of words in document
+        total_words = len(word_list)
+        # get number of times word appears in document
+        time_word_appears = word_list.count(word)
+
+    # return 0 if word doesn't appear
+    if time_word_appears == 0:
+        return 0
+
+    # return number of times word appears in document / total number of words in document
+    return time_word_appears / total_words
+
+def get_tf_idf(word, URL):
+    """ gets the tf-idf weight of the word provided in the document provided """
+    return math.log((1 + get_tf(word, URL)), 2) * get_idf(word)
+
+# testing...
+print("page rank of N-3: ")
 print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
+print("idf value for apple: ")
+print(get_idf("apple"))
+print("tf value for apple in N-3: ")
+print(get_tf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
+print("tf-idf value for apple in N-3: ")
+print(get_tf_idf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
