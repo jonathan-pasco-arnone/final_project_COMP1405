@@ -127,6 +127,7 @@ def get_tf(word, URL):
     # initialize variables
     total_words = 0
     time_word_appears = 0
+    folder_num = -1
 
     # get the matching file_text file for the url
     for folder in os.listdir(CRAWL_PATH):
@@ -139,6 +140,11 @@ def get_tf(word, URL):
                 if i in "0123456789":
                     folder_num = i
         file.close()
+    
+    # runs if folder_num was not found
+    if folder_num == -1:
+        return None
+    
     with open(CRAWL_PATH + "/" + folder_num + "/file_text.txt", 'r', encoding="utf8") as file:
         # make a list of all the words in the file
         word_list = file.read().split()
