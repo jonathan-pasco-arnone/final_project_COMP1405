@@ -155,7 +155,7 @@ def get_tf(word, URL):
     return time_word_appears / total_words
 
 def get_tf_idf(word, URL):
-    """ gets the tf-idf weight of the word provided in the document provided """
+    """ Gets the tf-idf weight of the word provided in the document provided """
     return math.log((1 + get_tf(word, URL)), 2) * get_idf(word)
 
 # testing...
