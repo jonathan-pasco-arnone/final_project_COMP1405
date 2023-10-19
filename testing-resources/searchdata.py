@@ -5,8 +5,8 @@
 
 # For cycling through the folders
 import os
-import matmult
 import math
+import matmult
 
 CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
 
@@ -62,10 +62,10 @@ def get_page_rank(URL):
         links[file_link] = len(probability_matrix)
         probability_matrix.append([])
         basic_vector[0].append(0)
-    
+
     if links.get(URL) is None:
         return -1
-    
+
     basic_vector[0][0] = 1
 
     # Fills out the probability matrix with all the values
@@ -78,7 +78,7 @@ def get_page_rank(URL):
                 probability_matrix[index].append(chance_per_page)
             else:
                 probability_matrix[index].append(0)
-    
+
     alpha = 0.1
 
     # Multiiply matrix by 1 - alpha 
@@ -89,7 +89,7 @@ def get_page_rank(URL):
     for row_index, row in enumerate(probability_matrix):
         for column_index, value in enumerate(row):
             probability_matrix[row_index][column_index] += + alpha / len(probability_matrix)
-    
+
     vector_b = [[]]
     euclidean_distance = 1
     # Euclidean distance testor
@@ -97,7 +97,7 @@ def get_page_rank(URL):
         vector_b = basic_vector
         basic_vector = matmult.mult_matrix(basic_vector, probability_matrix)
         euclidean_distance = matmult.euclidean_dist(vector_b, basic_vector)
-    
+
     return basic_vector[0][links[URL]]
 
 def get_idf(word):
@@ -129,23 +129,23 @@ def get_tf(word, URL):
     time_word_appears = 0
     folder_num = -1
 
-    # get the matching file_text file for the url
-    for folder in os.listdir(CRAWL_PATH):
-        file = open(CRAWL_PATH + "/" + folder + "/title_and_link.txt", "r", encoding="utf8")
+    # create a lsit for crawler_data folders and sort it (using lamba algorithm)
+    dir_search = sorted(os.listdir(CRAWL_PATH), key=lambda x: int(x))
+
+    # get the matching file_text.txt for the url
+    for count in dir_search:
+        file = open(CRAWL_PATH + "/" + str(count) + "/title_and_link.txt", "r", encoding="utf8")
         line = file.readlines()
+        # print (i + " + " + str(line))
         if (line[1].strip("\n")) == URL:
-            # IMPORTANT: THIS CODE IS HORRIBLE AND NEEDS TO BE FIXED, BUT IT WORKS FOR NOW
-            num_find = list(line[1].strip("\n"))
-            for i in num_find:
-                if i in "0123456789":
-                    folder_num = i
+            folder_num = count
         file.close()
-    
-    # runs if folder_num was not found
+
+    # returns 0 if folder_num was not found
     if folder_num == -1:
-        return None
-    
-    with open(CRAWL_PATH + "/" + folder_num + "/file_text.txt", 'r', encoding="utf8") as file:
+        return 0
+
+    with open(CRAWL_PATH + "/" + str(folder_num) + "/file_text.txt", 'r', encoding="utf8") as file:
         # make a list of all the words in the file
         word_list = file.read().split()
         # get total number of words in document
