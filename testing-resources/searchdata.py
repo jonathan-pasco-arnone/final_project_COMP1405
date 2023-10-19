@@ -136,9 +136,9 @@ def get_tf(word, URL):
     for count in dir_search:
         file = open(CRAWL_PATH + "/" + str(count) + "/title_and_link.txt", "r", encoding="utf8")
         line = file.readlines()
-        # print (i + " + " + str(line))
         if (line[1].strip("\n")) == URL:
             folder_num = count
+            break
         file.close()
 
     # returns 0 if folder_num was not found
@@ -165,12 +165,12 @@ def get_tf_idf(word, URL):
     return math.log((1 + get_tf(word, URL)), 2) * get_idf(word)
 
 # testing...
-print("page rank of N-3: ")
-print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
-print("idf value for apple: ")
-print(get_idf("apple"))
-print("tf value for apple in N-3: ")
-print(get_tf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
-print("tf-idf value for apple in N-3: ")
-print(get_tf_idf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
-print("done here.\n\n\n\n\n\n")
+# print("page rank of N-3: ")
+# print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
+# print("idf value for apple: ")
+# print(get_idf("apple"))
+# print("tf value for apple in N-3: ")
+# print(get_tf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
+# print("tf-idf value for apple in N-3: ")
+# print(get_tf_idf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
+# print("done here.\n\n\n\n\n\n")
