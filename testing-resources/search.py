@@ -14,18 +14,18 @@ def search(phrase, boost):
     words = phrase.split()
 
     top_ten = []
-    for folder_num, folder in enumerate(os.listdir(CRAWL_PATH)):
+    for folder in os.listdir(CRAWL_PATH):
         file = open(CRAWL_PATH + "/" + folder + "/title_and_link.txt", "r", encoding="utf8")
         file_link = (file.readlines(0)[1]).strip()
 
+        # Cosine Similarity
         cosine_similarity = 0.0
         numerator = 0.0
         denominator_q = 0.0
         denominator_d = 0.0
-        # Cosine Similarity
         for word in words:
             # Get q vector's tfidf
-            # The idf of this value is always 1/2, so the log base 2 of 1/2 = -1
+            # The tf-idf of this value is always -1
             q_vector = math.log(words.count(word) / len(words), 2) * -1
             d_vector = searchdata.get_tf_idf(word, file_link)
             numerator += q_vector * d_vector
@@ -40,54 +40,26 @@ def search(phrase, boost):
             else:
                 cosine_similarity = (numerator / (math.sqrt(denominator_q) * math.sqrt(denominator_d)))
 
-        # Place the new files cosine similarity into the list in the correct spot
-        highest_index = 0
-        lowest_index = len(top_ten) - 1
+        # Place the new file's cosine similarity into the list in the correct spot
+        placement_location = 0
+        for index, dictionary in enumerate(top_ten):
+            if dictionary["score"] < cosine_similarity:
+                placement_location = index
+                break
+            if len(top_ten) - 1 == index:
+                placement_location = len(top_ten)
 
-        midpoint = int(lowest_index / 2)
-        full_range = lowest_index - highest_index + 1
-        print("Full range", full_range)
-
-        while full_range > 1:
-            full_range = lowest_index - highest_index
-
-            # If the new cosine similarity is greater than or equal to the current one on the list
-            if top_ten[midpoint]["score"] <= cosine_similarity:
-                lowest_index = midpoint
-
-            # If the value is greater than the middle of the list
-            else:
-                lowest_index = midpoint
-
-            # Calculates the midpoint of the range (rounded down)
-            midpoint = int((highest_index + lowest_index) / 2)
-            print("midpoint", midpoint)
-
-        # Does the final check to see if it should go on the top of of the list
-        # ie. the midpoint is a the top currently
-        # if top_ten[midpoint]["score"] < cosine_similarity:
-        #     midpoint += 1
-
-        top_ten.insert(midpoint, {})
-        top_ten[midpoint]["url"] = file_link
+        # Building all the parts of the dictionary
+        top_ten.insert(placement_location, {})
+        top_ten[placement_location]["url"] = file_link
         file.seek(0)
-        top_ten[midpoint]["title"] = file.readlines(0)[0].strip()
-        top_ten[midpoint]["score"] = cosine_similarity
-        print(file_link)
-        print("\n\n\n")
-        for row in top_ten:
-            print(row)
-        print("\n\n\n")
+        top_ten[placement_location]["title"] = file.readlines(0)[0].strip()
+        top_ten[placement_location]["score"] = cosine_similarity
         
-
-
+    # 10 is the max the list should hold
+    counter = len(top_ten) - 10
+    while counter > 0:
+        del top_ten[:1]
+        counter -= 1
 
     return top_ten
-    
-
-
-        
-
-
-
-search("apple banana grape fig", True)
