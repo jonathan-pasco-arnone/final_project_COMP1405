@@ -12,8 +12,8 @@ CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
 def search(phrase, boost):
     """ Determines the top ten searchs for the query inputted """
     words = phrase.split()
-
     top_ten = []
+
     for folder in os.listdir(CRAWL_PATH):
         file = open(CRAWL_PATH + "/" + folder + "/title_and_link.txt", "r", encoding="utf8")
         file_link = (file.readlines(0)[1]).strip()
@@ -31,14 +31,16 @@ def search(phrase, boost):
             numerator += q_vector * d_vector
             denominator_q += q_vector ** 2
             denominator_d += d_vector **2
-        
+
         # If any of the words are in any of the documents then continue
         if denominator_d != 0:
             # If the boost is applied or not
             if boost:
-                cosine_similarity = (searchdata.get_page_rank(file_link) * numerator / (math.sqrt(denominator_q) * math.sqrt(denominator_d)))
+                cosine_similarity = (searchdata.get_page_rank(file_link) * numerator
+                      / (math.sqrt(denominator_q) * math.sqrt(denominator_d)))
             else:
-                cosine_similarity = (numerator / (math.sqrt(denominator_q) * math.sqrt(denominator_d)))
+                cosine_similarity = (numerator
+                      / (math.sqrt(denominator_q) * math.sqrt(denominator_d)))
 
         # Place the new file's cosine similarity into the list in the correct spot
         placement_location = 0
@@ -55,7 +57,7 @@ def search(phrase, boost):
         file.seek(0)
         top_ten[placement_location]["title"] = file.readlines(0)[0].strip()
         top_ten[placement_location]["score"] = cosine_similarity
-        
+
     # 10 is the max the list should hold
     counter = len(top_ten) - 10
     while counter > 0:
@@ -63,3 +65,6 @@ def search(phrase, boost):
         counter -= 1
 
     return top_ten
+
+for row in search("apple fig banana blueberry toast", False):
+    print(row)

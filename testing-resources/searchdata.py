@@ -73,7 +73,7 @@ def get_page_rank(URL):
         incoming_links = get_incoming_links(key)
         chance_per_page = 1 / len(incoming_links)
 
-        for website in links.keys():
+        for website in links:
             if website in incoming_links:
                 probability_matrix[index].append(chance_per_page)
             else:
@@ -81,13 +81,13 @@ def get_page_rank(URL):
 
     alpha = 0.1
 
-    # Multiiply matrix by 1 - alpha 
+    # Multiiply matrix by 1 - alpha
     probability_matrix = matmult.mult_scalar(probability_matrix, 1 - alpha)
 
     # Add probability matrix with a matrix of equal size that has a 1 in (amount of rows) value
     # This second matrix will be multiplied by alpha
     for row_index, row in enumerate(probability_matrix):
-        for column_index, value in enumerate(row):
+        for column_index in range(len(row)):
             probability_matrix[row_index][column_index] += + alpha / len(probability_matrix)
 
     vector_b = [[]]
@@ -165,12 +165,11 @@ def get_tf_idf(word, URL):
     return math.log((1 + get_tf(word, URL)), 2) * get_idf(word)
 
 # testing...
-# print("page rank of N-3: ")
-# print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
-# print("idf value for apple: ")
-# print(get_idf("apple"))
-# print("tf value for apple in N-3: ")
-# print(get_tf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
-# print("tf-idf value for apple in N-3: ")
-# print(get_tf_idf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
-# print("done here.\n\n\n\n\n\n")
+print("page rank of N-3: ")
+print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
+print("idf value for apple: ")
+print(get_idf("apple"))
+print("tf value for apple in N-3: ")
+print(get_tf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
+print("tf-idf value for apple in N-3: ")
+print(get_tf_idf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))

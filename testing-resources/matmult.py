@@ -45,18 +45,18 @@ def mult_matrix(a, b):
                     new_value += row_a[column_index_a] * row_b[column_index_b]
                     column_index_a += 1
                 (new_matrix[row_index_a]).append(new_value)
-                
+
                 column_index_b += 1
             row_index_a += 1
         return new_matrix
     else:
         return "None"
-    
+
 def euclidean_dist(a,b):
     """ Calculates the distance between two points """
     sum_under_root = 0
     # The 0's are because each vector is within another list conatining only itself
-    # ex: [[5,3,7]] 
+    # ex: [[5,3,7]]
     # Unnecessary extra brackets
     for index in range(len(a[0])):
         sum_under_root += (a[0][index] - b[0][index]) ** 2
