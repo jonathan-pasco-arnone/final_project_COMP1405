@@ -27,12 +27,11 @@ def search(phrase, boost):
         for word in words:
             # Get q vector's tfidf
             # The tf-idf of this value is always -1
-            q_vector = math.log(1 / , 2)
-            # q_vector = math.log(words.count(word) / len(words), 2) * -1
-            d_vector = searchdata.get_tf_idf(file_link, word)
+            q_vector = abs(math.log(1 + (words.count(word) / len(words)), 2) * -1)
+            d_vector = abs(searchdata.get_tf_idf(file_link, word))
             numerator += q_vector * d_vector
             denominator_q += q_vector ** 2
-            denominator_d += d_vector **2
+            denominator_d += d_vector ** 2
 
         # If any of the words are in any of the documents then continue
         if denominator_d != 0:
@@ -48,6 +47,7 @@ def search(phrase, boost):
         for index, dictionary in enumerate(top_ten):
             if dictionary["score"] < cosine_similarity:
                 placement_location = index
+                break
             if len(top_ten) - 1 == index:
                 placement_location = len(top_ten)
 
@@ -68,6 +68,5 @@ def search(phrase, boost):
         counter -= 1
 
     return top_ten
-
-for dict in search('cherry',True):
+for dict in search('coconut fig cherry',False):
     print(dict["title"], dict["score"])
