@@ -26,8 +26,8 @@ def search(phrase, boost):
         denominator_d = 0.0
         for word in words:
             # Get q vector's tfidf
-            # The tf-idf of this value is always -1
-            q_vector = abs(math.log(1 + (words.count(word) / len(words)), 2) * -1)
+            # The idf of this value is always -1
+            q_vector = abs(math.log(1 + (words.count(word) / len(words)), 2) * math.log(1 / 2, 2))
             d_vector = abs(searchdata.get_tf_idf(file_link, word))
             numerator += q_vector * d_vector
             denominator_q += q_vector ** 2
@@ -66,7 +66,8 @@ def search(phrase, boost):
     while counter > 0:
         del top_ten[:1]
         counter -= 1
-
     return top_ten
-for dict in search('coconut fig cherry',False):
-    print(dict["title"], dict["score"])
+
+
+# for dict in search("coconut fig cherry",False):
+#     print(dict["title"], dict["score"])
