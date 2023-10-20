@@ -22,6 +22,8 @@ def crawl(seed):
         os.rmdir(CRAWL_PATH)
 
     os.mkdir(CRAWL_PATH)
+    link_locations = {}
+    link_locations[seed] = 0
     links = []
     links.append(seed)
 
@@ -91,7 +93,7 @@ def crawl(seed):
                 # The use of "a" instead of "w" is so that I can add additional links instead of
                 # just overwriting the whole document every time
                 file = open(CRAWL_PATH + str(folder_num)
-                            + "/page_links.txt", "a", encoding="utf8")
+                      + "/page_links.txt", "a", encoding="utf8")
                 file.write(new_link + "\n")
                 file.close()
 
@@ -99,6 +101,7 @@ def crawl(seed):
                 # Will add link if it is not already in the list
                 if new_link not in links:
                     links.append(new_link)
+                    link_locations[new_link] = len(links) - 1
                 new_link = ""
 
             if edit_links:
@@ -113,6 +116,23 @@ def crawl(seed):
 
             index += 1
         folder_num += 1
+    
+    # Adds the incoming links file
+    for folder in os.listdir(CRAWL_PATH):
+        current_link_file = open(CRAWL_PATH + str(folder) + "/title_and_link.txt", "r", encoding="utf8")
+        current_link = current_link_file.readlines()[1].strip()
+        file = open(CRAWL_PATH + str(folder) + "/page_links.txt", "r", encoding="utf8")
+        outgoing_links = file.readlines()
+        for next_link in outgoing_links:
+            # Adds incoming link
+            incoming_link_file = open(CRAWL_PATH + str(link_locations[current_link])
+                + "/incoming_links.txt", "a", encoding="utf8")
+            incoming_link_file.write(next_link)
+        
+        current_link_file.close()
+        file.close()
+
     return len(links)
 
-crawl("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html")
+# crawl("https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html")
+crawl("http://people.scs.carleton.ca/~davidmckenney/fruits/N-56.html")

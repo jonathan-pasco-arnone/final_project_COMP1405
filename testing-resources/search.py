@@ -65,6 +65,3 @@ def search(phrase, boost):
         counter -= 1
 
     return top_ten
-
-for row in search("apple fig banana blueberry toast", False):
-    print(row)

@@ -22,34 +22,40 @@ def get_outgoing_links(URL):
         if link == URL:
             link_file = open(CRAWL_PATH + "/" + folder + "/page_links.txt", "r", encoding="utf8")
             outgoing_links = link_file.readlines()
+            break
+    if outgoing_links != None:
+        for index in range(len(outgoing_links)):
+            outgoing_links[index] = outgoing_links[index].strip()
+
     return outgoing_links
 
 def get_incoming_links(URL):
     """ Retrieves the outgoing links to a URL with reference to the seed URL from the crawl """
-    incoming_links = []
+    incoming_links = None
     # Cycles through each folder to check the outputs of each one
     for folder in os.listdir(CRAWL_PATH):
-        file = open(CRAWL_PATH + "/" + folder + "/title_and_link.txt", "r", encoding="utf8")
-        file_link = (file.readlines(0)[1]).strip()
-        for link in get_outgoing_links(file_link):
-            # If one of the outgoing links is the inputted URL
-            # Then add it to the incoming links
-            if link.strip() == URL:
-                incoming_links.append(file_link.strip())
-                break
+        current_file = open(CRAWL_PATH + "/" + folder + "/title_and_link.txt", "r", encoding="utf8")
+        link = (current_file.readlines(0)[1]).strip()
 
-    # If there are no incoming links then return None
-    # The if statement is equivalent to "if incoming_links == []:"
-    if not incoming_links:
-        return None
-    else:
-        return incoming_links
+        # If the title and link file is the same as the inputed link
+        # Then it is the right folder
+        if link == URL:
+            link_file = open(CRAWL_PATH + "/" + folder + "/incoming_links.txt", "r", encoding="utf8")
+            incoming_links = link_file.readlines()
+            break
+
+    if incoming_links != None:
+        for index in range(len(incoming_links)):
+            incoming_links[index] = incoming_links[index].strip()
+    
+    return incoming_links
 
 def get_page_rank(URL):
     """ Gets the page rank of the url provided """
     # The main matrix of the problem
     probability_matrix = []
     basic_vector = [[]]
+    alpha = 0.1
 
     # Holds each link as the key
     # Holds each value as the row in the matrix
@@ -72,23 +78,10 @@ def get_page_rank(URL):
     for index, key in enumerate(links.keys()):
         incoming_links = get_incoming_links(key)
         chance_per_page = 1 / len(incoming_links)
+        probability_matrix[index].extend(len(os.listdir(CRAWL_PATH)) * [alpha / len(os.listdir(CRAWL_PATH))])
 
-        for website in links:
-            if website in incoming_links:
-                probability_matrix[index].append(chance_per_page)
-            else:
-                probability_matrix[index].append(0)
-
-    alpha = 0.1
-
-    # Multiiply matrix by 1 - alpha
-    probability_matrix = matmult.mult_scalar(probability_matrix, 1 - alpha)
-
-    # Add probability matrix with a matrix of equal size that has a 1 in (amount of rows) value
-    # This second matrix will be multiplied by alpha
-    for row_index, row in enumerate(probability_matrix):
-        for column_index in range(len(row)):
-            probability_matrix[row_index][column_index] += + alpha / len(probability_matrix)
+        for website in incoming_links:
+            probability_matrix[index][links[website]] = chance_per_page * (1 - alpha) + alpha / len(os.listdir(CRAWL_PATH))
 
     vector_b = [[]]
     euclidean_distance = 1
@@ -136,7 +129,7 @@ def get_tf(word, URL):
     for count in dir_search:
         file = open(CRAWL_PATH + "/" + str(count) + "/title_and_link.txt", "r", encoding="utf8")
         line = file.readlines()
-        if (line[1].strip("\n")) == URL:
+        if (line[1].strip()) == URL:
             folder_num = count
             break
         file.close()
@@ -153,10 +146,6 @@ def get_tf(word, URL):
         # get number of times word appears in document
         time_word_appears = word_list.count(word)
 
-    # return 0 if word doesn't appear
-    if time_word_appears == 0:
-        return 0
-
     # return number of times word appears in document / total number of words in document
     return time_word_appears / total_words
 
@@ -164,12 +153,6 @@ def get_tf_idf(word, URL):
     """ Gets the tf-idf weight of the word provided in the document provided """
     return math.log((1 + get_tf(word, URL)), 2) * get_idf(word)
 
-# testing...
-print("page rank of N-3: ")
-print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
-print("idf value for apple: ")
-print(get_idf("apple"))
-print("tf value for apple in N-3: ")
-print(get_tf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
-print("tf-idf value for apple in N-3: ")
-print(get_tf_idf("apple", "http://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-3.html"))
+print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/fruits/N-56.html"))
+print("Should be 0.001455568622482555")
+# print(get_page_rank("https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html"))
