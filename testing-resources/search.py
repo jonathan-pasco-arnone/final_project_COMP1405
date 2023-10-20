@@ -49,7 +49,7 @@ def search(phrase, boost):
                 break
             if len(top_ten) - 1 == index:
                 placement_location = len(top_ten)
-
+        
         # If this cosine similarity is in the top ten
         # Building all the parts of the dictionary
         top_ten.insert(placement_location, {})
@@ -58,14 +58,7 @@ def search(phrase, boost):
         top_ten[placement_location]["title"] = file.readlines(0)[0].strip()
         top_ten[placement_location]["score"] = cosine_similarity
         file.close()
+        if len(top_ten) > 10:
+            del top_ten[10]
 
-
-    # 10 is the max the list should hold
-    counter = len(top_ten) - 10
-    while counter > 0:
-        del top_ten[:1]
-        counter -= 1
     return top_ten
-
-# for dic in search('pear lime pear fig coconut',True):
-#     print(dic["title"], dic["score"])

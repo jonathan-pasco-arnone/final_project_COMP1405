@@ -21,8 +21,12 @@ def crawl(seed):
                 os.remove(CRAWL_PATH + str(folder) + "/" + str(file))
             os.rmdir(CRAWL_PATH + str(folder))
         os.rmdir(CRAWL_PATH)
-    if os.path.exists(CRAWL_PATH + "../page_rank_file.txt"):
-        os.remove(CRAWL_PATH + "../page_rank_file.txt")
+    if os.path.exists("/workspaces/final_project_COMP1405/testing-resources/page_rank_file.txt"):
+        os.remove("/workspaces/final_project_COMP1405/testing-resources/page_rank_file.txt")
+    if os.path.exists("/workspaces/final_project_COMP1405/testing-resources/idf.txt"):
+        os.remove("/workspaces/final_project_COMP1405/testing-resources/idf.txt")
+    if os.path.exists("/workspaces/final_project_COMP1405/testing-resources/link_locations.txt"):
+        os.remove("/workspaces/final_project_COMP1405/testing-resources/link_locations.txt")
 
     os.mkdir(CRAWL_PATH)
     link_locations = {}

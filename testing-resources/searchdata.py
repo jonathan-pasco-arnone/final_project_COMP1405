@@ -145,5 +145,3 @@ def get_tf(URL, word):
 def get_tf_idf(URL, word):
     """ Gets the tf-idf weight of the word provided in the document provided """
     return math.log((1 + get_tf(URL, word)), 2) * get_idf(word)
-
-# print(get_tf_idf("http://people.scs.carleton.ca/~davidmckenney/fruits/N-128.html", "wdwadaw"))
