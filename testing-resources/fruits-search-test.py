@@ -7,7 +7,7 @@ output = open('fruits-search-failed.txt', 'w')
 success_output = open('fruits-search-passed.txt', 'w')
 
 #Performing crawl starting at seed http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html
-crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
+# crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
 #Test #0 checking search results for 'peach apple apple apple banana peach peach banana' and boost = True
 expected = [{'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-1.html', 'title': 'N-1', 'score': 0.020647172563080823}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-4.html', 'title': 'N-4', 'score': 0.01569787289336958}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-3.html', 'title': 'N-3', 'score': 0.013067535057474813}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html', 'title': 'N-0', 'score': 0.010025968700866314}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-9.html', 'title': 'N-9', 'score': 0.008194759266099565}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-12.html', 'title': 'N-12', 'score': 0.008093039118284323}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-20.html', 'title': 'N-20', 'score': 0.00784387680235508}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-15.html', 'title': 'N-15', 'score': 0.007636862626462582}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-6.html', 'title': 'N-6', 'score': 0.007323665269907148}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-42.html', 'title': 'N-42', 'score': 0.006711258414350045}]
 result = search.search('peach apple apple apple banana peach peach banana',True)
@@ -20,6 +20,7 @@ else:
   success_output.write('expected = {}\n'.format(str(expected)))
   success_output.write('result = {}\n\n\n'.format(str(result)))
 
+print("here")
 
 #Test #1 checking search results for 'banana peach tomato tomato pear peach peach' and boost = False
 expected = [{'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-679.html', 'title': 'N-679', 'score': 0.9999853329300575}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-172.html', 'title': 'N-172', 'score': 0.9974734177292797}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-178.html', 'title': 'N-178', 'score': 0.9945145933787903}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-176.html', 'title': 'N-176', 'score': 0.9934491429308954}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-86.html', 'title': 'N-86', 'score': 0.9916081919533283}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-462.html', 'title': 'N-462', 'score': 0.9911487080204266}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-813.html', 'title': 'N-813', 'score': 0.989949965900219}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-831.html', 'title': 'N-831', 'score': 0.9898165337469325}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-28.html', 'title': 'N-28', 'score': 0.9889050669410079}, {'url': 'http://people.scs.carleton.ca/~davidmckenney/fruits/N-1.html', 'title': 'N-1', 'score': 0.9877221259376553}]

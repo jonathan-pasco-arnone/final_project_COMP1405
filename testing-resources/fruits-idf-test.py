@@ -7,7 +7,7 @@ output = open('fruits-idf-failed.txt', 'w')
 success_output = open('fruits-idf-passed.txt', 'w')
 
 #Performing crawl starting at seed http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html
-crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
+# crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
 #Test #0 checking IDF for word peach
 expected = 0.05439229681862769
 result = searchdata.get_idf('peach')

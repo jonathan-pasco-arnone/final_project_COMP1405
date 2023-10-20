@@ -3,6 +3,7 @@
 # Created by: Jonathan Pasco-Arnone and Aidan Lalonde-Novales
 # Created on: October 2023
 
+import json
 # OS is just so I can make folders from inside the program
 import os
 import webdev
@@ -20,12 +21,16 @@ def crawl(seed):
                 os.remove(CRAWL_PATH + str(folder) + "/" + str(file))
             os.rmdir(CRAWL_PATH + str(folder))
         os.rmdir(CRAWL_PATH)
+    if os.path.exists(CRAWL_PATH + "../page_rank_file.txt"):
+        os.remove(CRAWL_PATH + "../page_rank_file.txt")
 
     os.mkdir(CRAWL_PATH)
     link_locations = {}
     link_locations[seed] = 0
     links = []
     links.append(seed)
+
+    word_per_doc = {}
 
     folder_num = 0
     for weblink in links:
@@ -65,6 +70,14 @@ def crawl(seed):
                 file.write(new_text)
                 file.close()
                 edit_text = False
+
+                # Creates a list with no duplicates of every word in the file
+                all_words = list(dict.fromkeys(new_text.split()))
+                for word in all_words:
+                    if word_per_doc.get(word) is None:
+                        word_per_doc[word] = 1
+                    else:
+                        word_per_doc[word] += 1
 
             # Determines if the current character is the start of a link
             if "<a href=\"" == (doc_string[index - 9: index]):
@@ -132,5 +145,14 @@ def crawl(seed):
 
         current_link_file.close()
         file.close()
+    
+    # Puts the dictionary into a file
+    link_locations_file = open(CRAWL_PATH + "../" + "link_locations.txt", "w")
+    json.dump(link_locations, link_locations_file)
+    link_locations_file.close()
+
+    idf_file = open(CRAWL_PATH + "../" + "idf.txt", "w")
+    json.dump(word_per_doc, idf_file)
+    idf_file.close()
 
     return len(links)
