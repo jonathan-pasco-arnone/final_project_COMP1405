@@ -12,7 +12,9 @@ CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
 
 def search(phrase, boost):
     """ Determines the top ten searchs for the query inputted """
-    words = phrase.split()
+    all_words = phrase.split()
+    # Creates a list with no duplicates of every word in the phrase
+    words = list(dict.fromkeys(all_words))
     top_ten = []
 
     for folder in os.listdir(CRAWL_PATH):
@@ -25,23 +27,20 @@ def search(phrase, boost):
         denominator_q = 0.0
         denominator_d = 0.0
         for word in words:
-            # Get q vector's tfidf
-            # The idf of this value is always -1
-            q_vector = abs(math.log(1 + (words.count(word) / len(words)), 2) * math.log(1 / 2, 2))
-            d_vector = abs(searchdata.get_tf_idf(file_link, word))
-            numerator += q_vector * d_vector
-            denominator_q += q_vector ** 2
-            denominator_d += d_vector ** 2
+            tf_q = all_words.count(word) / len(all_words)
+            q_value = math.log(1 + tf_q, 2) * searchdata.get_idf(word)
+            d_value = searchdata.get_tf_idf(file_link, word)
+            numerator += q_value * d_value
+            denominator_q += q_value * q_value
+            denominator_d += d_value * d_value
 
         # If any of the words are in any of the documents then continue
         if denominator_d != 0:
             # If the boost is applied or not
             if boost:
-                cosine_similarity = (searchdata.get_page_rank(file_link) * numerator
-                      / (math.sqrt(denominator_q) * math.sqrt(denominator_d)))
+                cosine_similarity = (searchdata.get_page_rank(file_link) * numerator / ((denominator_q ** 0.5) * (denominator_d ** 0.5)))
             else:
-                cosine_similarity = (numerator
-                      / (math.sqrt(denominator_q) * math.sqrt(denominator_d)))
+                cosine_similarity = (numerator / ((denominator_q ** 0.5) * (denominator_d ** 0.5)))
         # Place the new file's cosine similarity into the list in the correct spot
         placement_location = 0
         for index, dictionary in enumerate(top_ten):
@@ -68,6 +67,5 @@ def search(phrase, boost):
         counter -= 1
     return top_ten
 
-
-# for dict in search("coconut fig cherry",False):
-#     print(dict["title"], dict["score"])
+# for dic in search('pear lime pear fig coconut',True):
+#     print(dic["title"], dic["score"])
