@@ -7,7 +7,7 @@ output = open('fruits-tfidf-failed.txt', 'w')
 success_output = open('fruits-tfidf-passed.txt', 'w')
 
 #Performing crawl starting at seed http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html
-crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
+# crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
 #Test #0 checking TF-IDF for URL http://people.scs.carleton.ca/~davidmckenney/fruits/N-128.html and word peach
 expected = 0.01507262712743627
 result = searchdata.get_tf_idf('http://people.scs.carleton.ca/~davidmckenney/fruits/N-128.html','peach')

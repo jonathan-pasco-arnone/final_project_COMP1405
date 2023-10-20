@@ -7,7 +7,7 @@ output = open('fruits-tf-failed.txt', 'w')
 success_output = open('fruits-tf-passed.txt', 'w')
 
 #Performing crawl starting at seed http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html
-crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
+# crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
 #Test #0 checking TF for URL http://people.scs.carleton.ca/~davidmckenney/fruits/N-77.html and word banana
 expected = 0.2222222222222222
 result = searchdata.get_tf('http://people.scs.carleton.ca/~davidmckenney/fruits/N-77.html','banana')

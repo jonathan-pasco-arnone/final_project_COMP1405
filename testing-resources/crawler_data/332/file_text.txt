@@ -1,7 +1,17 @@
 
-banana
 apple
-banana
 apple
-pear
-pear
+coconut
+coconut
+apple
+coconut
+peach
+peach
+apple
+apple
+peach
+banana
+peach
+coconut
+coconut
+coconut

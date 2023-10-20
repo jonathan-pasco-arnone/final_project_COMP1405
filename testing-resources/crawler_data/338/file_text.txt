@@ -1,8 +1,8 @@
 
-banana
-peach
+apple
 peach
 coconut
 pear
-pear
-peach
+coconut
+coconut
+banana

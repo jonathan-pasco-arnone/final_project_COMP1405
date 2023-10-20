@@ -4,6 +4,9 @@ import crawler
 import searchdata
 import search
 
+import time
+start = time.time()
+
 #Performing crawl starting at seed http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html
 crawler.crawl('http://people.scs.carleton.ca/~davidmckenney/fruits/N-0.html')
 
@@ -5150,3 +5153,6 @@ success_output.close()
 
 output.close()
 success_output.close()
+
+end = time.time()
+print("Linear time: ", (end-start))

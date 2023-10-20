@@ -1,4 +1,9 @@
 
+pear
+banana
 apple
+banana
+banana
 peach
-peach
+pear
+pear

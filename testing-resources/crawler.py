@@ -116,10 +116,11 @@ def crawl(seed):
 
             index += 1
         folder_num += 1
-    
+
     # Adds the incoming links file
     for folder in os.listdir(CRAWL_PATH):
-        current_link_file = open(CRAWL_PATH + str(folder) + "/title_and_link.txt", "r", encoding="utf8")
+        current_link_file = open(CRAWL_PATH + str(folder)
+              + "/title_and_link.txt", "r", encoding="utf8")
         current_link = current_link_file.readlines()[1].strip()
         file = open(CRAWL_PATH + str(folder) + "/page_links.txt", "r", encoding="utf8")
         outgoing_links = file.readlines()
@@ -128,11 +129,8 @@ def crawl(seed):
             incoming_link_file = open(CRAWL_PATH + str(link_locations[current_link])
                 + "/incoming_links.txt", "a", encoding="utf8")
             incoming_link_file.write(next_link)
-        
+
         current_link_file.close()
         file.close()
 
     return len(links)
-
-# crawl("https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html")
-crawl("http://people.scs.carleton.ca/~davidmckenney/fruits/N-56.html")

@@ -1,19 +1,11 @@
 
-coconut
-peach
-pear
-peach
-banana
-peach
 apple
-banana
-banana
-coconut
+apple
 pear
-pear
-coconut
-peach
 pear
 peach
+coconut
+banana
+peach
 pear
-pear
+apple

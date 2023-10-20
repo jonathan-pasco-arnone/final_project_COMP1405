@@ -1,4 +1,3 @@
 
 coconut
-banana
-pear
+peach

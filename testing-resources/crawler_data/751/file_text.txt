@@ -1,12 +1,2 @@
 
-banana
-pear
 apple
-peach
-banana
-peach
-peach
-apple
-peach
-coconut
-banana

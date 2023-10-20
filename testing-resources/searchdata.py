@@ -23,7 +23,7 @@ def get_outgoing_links(URL):
             link_file = open(CRAWL_PATH + "/" + folder + "/page_links.txt", "r", encoding="utf8")
             outgoing_links = link_file.readlines()
             break
-    if outgoing_links != None:
+    if outgoing_links is not None:
         for index in range(len(outgoing_links)):
             outgoing_links[index] = outgoing_links[index].strip()
 
@@ -40,14 +40,15 @@ def get_incoming_links(URL):
         # If the title and link file is the same as the inputed link
         # Then it is the right folder
         if link == URL:
-            link_file = open(CRAWL_PATH + "/" + folder + "/incoming_links.txt", "r", encoding="utf8")
+            link_file = open(CRAWL_PATH + "/" + folder
+                  + "/incoming_links.txt", "r", encoding="utf8")
             incoming_links = link_file.readlines()
             break
 
-    if incoming_links != None:
+    if incoming_links is not None:
         for index in range(len(incoming_links)):
             incoming_links[index] = incoming_links[index].strip()
-    
+
     return incoming_links
 
 def get_page_rank(URL):
@@ -78,10 +79,12 @@ def get_page_rank(URL):
     for index, key in enumerate(links.keys()):
         incoming_links = get_incoming_links(key)
         chance_per_page = 1 / len(incoming_links)
-        probability_matrix[index].extend(len(os.listdir(CRAWL_PATH)) * [alpha / len(os.listdir(CRAWL_PATH))])
+        probability_matrix[index].extend(len(os.listdir(CRAWL_PATH))
+              * [alpha / len(os.listdir(CRAWL_PATH))])
 
         for website in incoming_links:
-            probability_matrix[index][links[website]] = chance_per_page * (1 - alpha) + alpha / len(os.listdir(CRAWL_PATH))
+            probability_matrix[index][links[website]] = (chance_per_page
+                  * (1 - alpha) + alpha / len(os.listdir(CRAWL_PATH)))
 
     vector_b = [[]]
     euclidean_distance = 1
@@ -115,7 +118,7 @@ def get_idf(word):
         return 0
     return math.log((total_docs / (1 + docs_with_word)), 2)
 
-def get_tf(word, URL):
+def get_tf(URL, word):
     """ gets the term frequency of the word provided in the document provided """
     # initialize variables
     total_words = 0
@@ -149,10 +152,6 @@ def get_tf(word, URL):
     # return number of times word appears in document / total number of words in document
     return time_word_appears / total_words
 
-def get_tf_idf(word, URL):
+def get_tf_idf(URL, word):
     """ Gets the tf-idf weight of the word provided in the document provided """
-    return math.log((1 + get_tf(word, URL)), 2) * get_idf(word)
-
-print(get_page_rank("http://people.scs.carleton.ca/~davidmckenney/fruits/N-56.html"))
-print("Should be 0.001455568622482555")
-# print(get_page_rank("https://people.scs.carleton.ca/~davidmckenney/tinyfruits/N-0.html"))
+    return math.log((1 + get_tf(URL, word)), 2) * get_idf(word)
