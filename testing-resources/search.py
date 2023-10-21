@@ -3,7 +3,6 @@
 # Created by: Jonathan Pasco-Arnone and Aidan Lalonde-Novales
 # Created on: October 2023
 
-import json
 import math
 import os
 import searchdata
