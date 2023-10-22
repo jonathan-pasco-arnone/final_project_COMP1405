@@ -10,7 +10,7 @@ import searchdata
 CRAWL_PATH = "/workspaces/final_project_COMP1405/testing-resources/crawler_data"
 
 def search(phrase, boost):
-    """ Determines the top ten searchs for the query inputted """
+    """ Determines the top ten searches for the query inputted """
     all_words = phrase.split()
     # Creates a list with no duplicates of every word in the phrase
     words = list(dict.fromkeys(all_words))
