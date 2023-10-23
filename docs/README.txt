@@ -1,3 +1,3 @@
 SEARCH ENGINE PROJECT by JONATHAN PASCO-ARNONE and AIDAN LALONDE-NOVALES
 
-[add instructions for running from command line]
+To run from CLI, type 'python [name of tester].py'
